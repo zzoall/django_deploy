@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,8 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blog",
-    "board", # 맨 마지막 데이터에도 쉼표를 달아두면 좋은 점 
+    "blog",  # 맨 마지막 데이터에도 쉼표를 달아두면 좋은 점 
              # -> 다음에 추가 할 때 까먹어도 봐줌 
              # -> 추가되거나 제거된 코드 비교 할 때 보기 좋아서
 ]
@@ -120,6 +120,12 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '_media')  
+# 변수명 중에 _붙어있는 경우 개발자만 쓸 거다 라는 뜻이라고 생각하시면 됩니다
+# url 경로와 실제 파일이 저장되는 경로를 일부러 불일치시킨것 
+# 해당 글에서만 저 경로의 파일을 호출할 수 있도록
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
