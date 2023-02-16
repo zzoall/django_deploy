@@ -1,4 +1,4 @@
-# from django.shortcuts import render  # Function Based View 를 사용했습니다
+from django.shortcuts import render  # Function Based View 를 사용했습니다
 from .models import Post
 from django.views.generic import ListView # 게시판형으로 데이터를 가지고 오는 클래스 
 from django.views.generic.detail import DetailView
@@ -30,11 +30,22 @@ class PostDetail(DetailView):  # post_detail 라고 생긴 template과 model을 
     def get_context_data(self, **kwargs): # 함수의 파라미터를 개수 안 정해서 k-v 순으로 만들어 보내겠다
         # 속성명 = 값 -> 파이썬의 namespace에서는 키:밸류 순으로 관리됩니다
         context = super(PostDetail, self).get_context_data(**kwargs)
-        context['subject'] = Post.objects.get(pk).title # first_post라는 이름으로 하나 더 값을 만들어서 전달할게요
+        # print(context['object']) # 뭐가 들어있나 확인해보세요
+        context['subject'] = context['object'].title 
         # 필요한 값들을 ORM으로 뽑아서 가져올 수 있습니다.
         return context
 
+def about_me(request):
+    return render(
+        request,
+        'blog/about.html'
+    )
 
+def contact(request):
+    return render(
+        request,
+        'blog/contact.html'
+    )
 # Create your views here.
 # V (view) - 화면에 출력되는 부분을 책임집니다. 
 # def index(request):
