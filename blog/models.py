@@ -1,6 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# Category 클래스 구현
+# unique=True 전체 테이블에 해당 categoryName은 딱 1개만 만들어지도록 구현됩니다
+# slugField : url로 통신하는 Django의 통신방식에 걸맞게 입력한 값이 URL화 되도록 자동으로 변경해줍니다
+# 특수문자 에러처리, allow_unicode=True를 걸어두면 한국어 등 영어 외 언어도 사용 가능
+class Category(models.Model):
+    categoryName = models.CharField(max_length=30, unique=True) 
+    slug = models.SlugField(max_length=30, unique=True, allow_unicode=True)
+
+    def __str__(self):
+        return self.categoryName
+
+    def get_absolute_url(self):
+        return f'/blog/category/{self.slug}/'
+
+    # class Meta - 이 클래스를 사용하기 위한 간단한 지시나 설명을 넣어주는 class
+    # 데이터의 '메타' 데이터와 같은 뜻입니다.
+    class Meta:
+        verbose_name_plural = 'categories'
+
 # Create your models here. 
 # DB의 테이블을 좀더 쉽게 꺼내오기 위해 클래스 형식으로 바꿔주는 기능
 class Post(models.Model):
@@ -22,6 +41,9 @@ class Post(models.Model):
     # CASCADE : User를 삭제하면 관련있는 모든 현재 테이블의 데이터 삭제
     # author = models.ForeignKey(User, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    # blank=True 글작성시 옵서녈 필드
+    #  on_delete=models.SET_NULL, null=True 해당 필드와 걸려있는 다른 테이블의 키가 삭제될 때 None을 넣어줘
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True) 
     
 
     def __str__(self):
@@ -35,19 +57,3 @@ class Post(models.Model):
     def first_post_query(self):
         return Post.objects.all().last().title
 
-# Category 클래스 구현
-# unique=True 전체 테이블에 해당 categoryName은 딱 1개만 만들어지도록 구현됩니다
-# slugField : url로 통신하는 Django의 통신방식에 걸맞게 입력한 값이 URL화 되도록 자동으로 변경해줍니다
-# 특수문자 에러처리, allow_unicode=True를 걸어두면 한국어 등 영어 외 언어도 사용 가능
-class Category(models.Model):
-    categoryName = models.CharField(max_length=30, unique=True) 
-    slug = models.SlugField(max_length=30, unique=True, allow_unicode=True)
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return f'/blog/category/{self.slug}/'
-
-    class Meta:
-        verbose_name_plural = 'categories'
