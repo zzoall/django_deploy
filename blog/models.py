@@ -19,10 +19,13 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # 값을 변경할 수 있음. default 값으로 현재시간이 찍혀있음 
     
     # 작성자 - 외래키로 참조
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    # CASCADE : User를 삭제하면 관련있는 모든 현재 테이블의 데이터 삭제
+    # author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    
 
     def __str__(self):
-        return f'[[{self.pk}] {self.title}]'
+        return f'[[{self.pk}] {self.title}            by {self.author}]'
 
     def get_absolute_url(self):
         return f'/blog/{self.pk}/'
@@ -31,3 +34,20 @@ class Post(models.Model):
    # 우리 의도: 전체 객체를 불러와서 그 중에 가장 최신글의 제목 뽑아내기
     def first_post_query(self):
         return Post.objects.all().last().title
+
+# Category 클래스 구현
+# unique=True 전체 테이블에 해당 categoryName은 딱 1개만 만들어지도록 구현됩니다
+# slugField : url로 통신하는 Django의 통신방식에 걸맞게 입력한 값이 URL화 되도록 자동으로 변경해줍니다
+# 특수문자 에러처리, allow_unicode=True를 걸어두면 한국어 등 영어 외 언어도 사용 가능
+class Category(models.Model):
+    categoryName = models.CharField(max_length=30, unique=True) 
+    slug = models.SlugField(max_length=30, unique=True, allow_unicode=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return f'/blog/category/{self.slug}/'
+
+    class Meta:
+        verbose_name_plural = 'categories'

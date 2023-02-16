@@ -24,6 +24,7 @@
                                             더보기
                                             <i class="bi bi-arrow-right"></i>
                                         </a>
+                                        by {{ first_post.author|upper }}
                                     </div>
                                 </div>
                                 {% if first_post.header_img %}
@@ -43,7 +44,7 @@
                             {% for post in posts %}
                             {% if post != posts.first %}
                             <div class="mb-4">
-                                <div class="small text-muted">{{ post.created_at }}</div>
+                                <div class="small text-muted">{{ post.created_at }} by {{ post.author|upper }}</div>
                                 <a class="link-dark" href="{{ post.get_absolute_url }}"><h3>{{ post.title }}</h3></a>
                                 <p class="content"> {{ post.content|truncatewords:20 }} </p>
                             </div>
