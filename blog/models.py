@@ -20,6 +20,18 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'categories'
 
+
+class Tag(models.Model):
+    tagName = models.CharField(max_length=30, unique=True) 
+    slug = models.SlugField(max_length=30, unique=True, allow_unicode=True)
+
+    def __str__(self):
+        return self.tagName
+
+    def get_absolute_url(self):
+        return f'/blog/tag/{self.slug}/'
+
+
 # Create your models here. 
 # DB의 테이블을 좀더 쉽게 꺼내오기 위해 클래스 형식으로 바꿔주는 기능
 class Post(models.Model):
@@ -44,13 +56,17 @@ class Post(models.Model):
     # blank=True 글작성시 옵서녈 필드
     #  on_delete=models.SET_NULL, null=True 해당 필드와 걸려있는 다른 테이블의 키가 삭제될 때 None을 넣어줘
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True) 
-    
+    # 다대다 관계는 ManyToManyField를 통해 관계를 맺어줍니다
+    tag = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return f'[[{self.pk}] {self.title}            by {self.author}]'
 
     def get_absolute_url(self):
         return f'/blog/{self.pk}/'
+
+    def get_file_extension(self):
+        return f'{self.file_upload}'.split('.')[-1]
 
    # 1. 모델에 함수를 추가해서 그 함수로 ORM을 뽑아낸다
    # 우리 의도: 전체 객체를 불러와서 그 중에 가장 최신글의 제목 뽑아내기

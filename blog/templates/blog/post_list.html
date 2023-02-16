@@ -4,7 +4,7 @@
             <!-- Page Content-->
             <section class="py-5">
                 <div class="container px-5">
-                    <h1 class="fw-bolder fs-5 mb-4">Company Blog</h1>
+                    <h1 class="fw-bolder fs-5 mb-4">Blog</h1>
                     <div class="card border-0 shadow rounded-3 overflow-hidden">
                         <div class="card-body p-0">
                             <div class="row gx-0">
@@ -16,7 +16,11 @@
 
                                         <!-- models.py 함수 사용 전체 객체를 불러와서 그 중에 첫번째 요소를 선택하고 그 요소한테 전체 객체의 제목을 뽑아내게 시키고 있습니다 -->
                                         <!-- <div class="h2 fw-bolder">{{ posts.first.first_post_query.title }}</div>  -->
+                                        {% if first_post.category %}
                                         {{ first_post.category }}
+                                        {% else %}
+                                        미분류
+                                        {% endif %}
                                         <!-- views.py에 오버라이딩 # 전체 객체는 전체 객체대로 오고 first_post라는 이름으로 가장 처음 글만 따로 옵니다 -->
                                         <div class="h2 fw-bolder">{{ first_post.title }}</div> 
                                         <p>{{ first_post.content|truncatewords:20 }}</p>
@@ -44,7 +48,13 @@
                             {% for post in posts %}
                             {% if post != posts.first %}
                             <div class="mb-4">
-                                <div class="small text-muted">{{ post.created_at }} by {{ post.author|upper }} at {{ post.category }}</div>
+                                <div class="small text-muted">{{ post.created_at }} by {{ post.author|upper }} at 
+                                    {% if post.category %}
+                                        {{ post.category }}
+                                    {% else %}
+                                        미분류
+                                    {% endif %}
+                                </div>
                                 <a class="link-dark" href="{{ post.get_absolute_url }}"><h3>{{ post.title }}</h3></a>
                                 <p class="content"> {{ post.content|truncatewords:20 }} </p>
                             </div>

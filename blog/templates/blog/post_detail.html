@@ -9,7 +9,11 @@
                                 <img class="img-fluid rounded-circle" src="https://picsum.photos/50/50" alt="..." />
                                 <div class="ms-3">
                                     <div class="fw-bold"> {{ post.author|upper }}</div>
-                                    <div class="text-muted">News, Business</div>
+                                    {% if post.category %}
+                                    <div class="text-muted">{{ post.category }}</div>
+                                    {% else %}
+                                    <div class="text-muted">미분류</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -36,6 +40,8 @@
                                     <p class="fs-5 mb-4"> {{ post.content }}</p>
                                     {% if post.file_upload %}
                                     <a href="{{ post.file_upload.url }}" class="btn btn-dark">다운로드</a>
+                                    {{ post.get_file_extension }}
+                                    
                                     {% endif %}
                                 </section>
                             </article>

@@ -22,7 +22,7 @@
     <div class="card" style="width: 40rem;">
         
         {% if post.header_img %}
-        <!-- .url : 미디어타입을 url 주소로 변환해서 출력해주는 역할 https://  ~~~  -->
+        <!-- .url : 미디어타입을 url 주소로 변환해서 출력해주는 역할 https:// /media/ ~~~  -->
         <img src="{{ post.header_img.url }}" class="card-img-top" alt="...">
         {% else %}
         <img src="{% static 'blog/jjanggu.png' %}" class="card-img-top" alt="...">

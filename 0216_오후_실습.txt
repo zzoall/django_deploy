@@ -1,6 +1,6 @@
 오후 2시 10분까지
-# 1. post_detail.html에서 Category 가 뜨도록 해주세요
-# 2. Category 가 없으면 미분류 라는 글자가 뜨도록 해주세요 
+v # 1. post_detail.html에서 Category 가 뜨도록 해주세요
+v # 2. Category 가 없으면 미분류 라는 글자가 뜨도록 해주세요 
 # 3. 파일이 있으면 다운로드 버튼 옆에 해당 파일의 확장자가 출력되도록 해주세요. split('.')
 
 10시
