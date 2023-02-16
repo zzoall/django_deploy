@@ -27,8 +27,15 @@
                                     <!-- Post meta content-->
                                     <div class="text-muted fst-italic mb-2">{{ post.created_at }}</div>
                                     <!-- Post categories-->
-                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                                    <!-- 태그가 있거나 없거나에 따라서 있으면 있는만큼 뱃지가 만들어지고
+                                    없으면 하나도 달려있지 않은 결과가 나오게 될겁니다 -->
+                                    {% if post.tag.exists %}
+                                    {% for ta in post.tag.all %}
+                                        <a href="#" class="">{{ ta }}</a>
+                                    {% endfor %}
+                                    <br/>
+                                    <br/>
+                                {% endif %}
                                 </header>
                                 <!-- Preview image figure-->
                                 {% if post.header_img %}
