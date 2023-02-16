@@ -29,10 +29,12 @@
                                     <!-- Post categories-->
                                     <!-- 태그가 있거나 없거나에 따라서 있으면 있는만큼 뱃지가 만들어지고
                                     없으면 하나도 달려있지 않은 결과가 나오게 될겁니다 -->
-                                    {% if post.tag.exists %}
+                                    {% if post.tag %}
                                     {% for ta in post.tag.all %}
+                                    {# {% for ta in post.tag.iterator %} #}
                                         <a href="#" class="">{{ ta }}</a>
                                     {% endfor %}
+   
                                     <br/>
                                     <br/>
                                 {% endif %}
