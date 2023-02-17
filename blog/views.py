@@ -1,5 +1,5 @@
 from django.shortcuts import render  # Function Based View 를 사용했습니다
-from .models import Post
+from .models import Post, Category # 추가
 from django.views.generic import ListView # 게시판형으로 데이터를 가지고 오는 클래스 
 from django.views.generic.detail import DetailView
 from django.core.paginator import Paginator
@@ -26,6 +26,13 @@ class PostList(ListView):  # post_list 라고 생긴 template과 model을 조합
     # object가 페이지 당 10개씩 나타내면, 뒤에 일부가 남을때 자투리 object가 5개 이상일 때만 출력하겠음
     paginate_orphans = 2  # 자투리 처리
     page_kwarg = "page" # 페이징과 관련된 argument
+
+    # 추가
+    def get_context_data(self, **kwargs):
+        context = super(PostList, self).get_context_data()
+        context['categories'] = Category.objects.all()
+        context['no_category_post_count'] = Post.objects.filter(category=None).count()
+        return context
 
 # blog 폴더(앱)에서 post_detail.html로 가고 있는 객체를 posts라고 이름을 변경해보세요
 # 해당 변수명으로 받은 객체들에 더해 subject 라는 이름으로 제목 데이터만 전달하는 추가 변수를 달아주세요
