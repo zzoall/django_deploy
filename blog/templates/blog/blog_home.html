@@ -45,7 +45,7 @@
                         <div class="col-xl-8">
                             <h2 class="fw-bolder fs-5 mb-4">News</h2>
                             <!-- News item-->
-                            {% for post in post_list %}
+                            {% for post in posts %}
                             {% if post != posts.first %}
                             <div class="mb-4">
                                 <div class="small text-muted">{{ post.created_at }} by {{ post.author|upper }} at 
