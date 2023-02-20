@@ -123,7 +123,8 @@
                                                         &nbsp;&nbsp;<small class="text-muted">{{ comment.created_at }}</small>
                                                     </h5>
                                                     <p>{{ comment.content | linebreaks }}</p>
-                                                    {% if comment.created_at != comment.updated_at %}
+                                                    {# 밀리세컨드 단위로 값이 들어가기 때문에 조금 러프한 비교가 필요합니다. #}
+                                                    {% if comment.created_at|date:'Y-m-d H:i' != comment.updated_at|date:'Y-m-d H:i' %}
                                                         <p class="text-muted float-right"><small>Updated: {{ comment.updated_at }}</small></p>
                                                     {% endif %}
                                                 </div>
