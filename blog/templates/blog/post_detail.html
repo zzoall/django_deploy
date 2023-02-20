@@ -58,12 +58,18 @@
                             <section>
                                 <div class="card bg-light">
                                     <div class="card-body">
-                                        <!-- Comment form 글쓰기 폼-->
-                                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                                        <!-- Comment form 글쓰기 폼 : 작성완료 버튼 클릭시 {{ post.get_absolute_url }}new_comment/ 이 url로 지금 가지고 있는 데이터를 달아서 전송합니다-->
+                                            <form  class="mb-4" method="post" action="{{ post.get_absolute_url }}new_comment/"> {% csrf_token %}
+                                                {{ form }}
+                        
+                                            <button type="submit" class="btn btn-dark float-right">작성완료</button>
+                                        
+                                        </form>
                                         <!-- Comment with nested comments
                                         여러개가 묶음으로 올겁니다 -->
-                                        {% if post.comment %} 
-                                        {% for comment in post.comment %}
+                            
+                                        {% if post.comment_set %} 
+                                        {% for comment in post.comment_set.iterator %}
                                         <div class="d-flex mb-4">
                                             <!-- Parent comment-->
                                             <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
@@ -72,6 +78,8 @@
                                                 {{ comment.content }}
                                         </div>
                                 </div>
+                                {% endfor %}
+                                {% endif %}
                             </section>
                         </div>
                     </div>

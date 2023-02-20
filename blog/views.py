@@ -1,8 +1,9 @@
-from django.shortcuts import render  # Function Based View 를 사용했습니다
+from django.shortcuts import render, redirect  # Function Based View 를 사용했습니다
 from .models import Post, Category, Tag
 from django.views.generic import ListView # 게시판형으로 데이터를 가지고 오는 클래스 
 from django.views.generic.detail import DetailView
 from django.views.generic import CreateView
+from .forms import CommentForm
 
 class PostCreate(CreateView):
     model = Post
@@ -111,6 +112,25 @@ def tag_posts(request, slug):
 
     )
 
+# 글쓰기 버튼 -> 로그인 했을 때만 나오게 하는 것과 유사
+# 글쓰기 버튼 -> 누구나 로그인한 회원이면 다 쓸 수 있게 
+
+# 댓글은 누가 다는지 ->  로그인한 사람만 달 수 있게 할거에요 (인증)
+
+# 댓글을 쓰고 작성완료 버튼을 누르면 생기는 일
+# 우리는 post_detail.html에 돌아가게 됩니다
+# 댓글화면에는 지금 등록한 댓글이 출력됩니다
+
+# 로그인(인증) 
+# -> 나 이 댓글/글을 수정할 수 있는 회원이야(권한, 자격) 확인하는 과정 (인가)
+# 내가 단 댓글만 수정, 삭제를 할 수 있게 할 거에요 
+
+def new_comment(request, pk):
+    if request.method=='POST':
+        comment_form = CommentForm(request.POST)
+        comment = comment_form.save() # commit 
+        # blog/post_list.html, 글번호가 있는 자리 -> 이 자리를 어딘가에서 만들어주면 될 거 같아요
+        return redirect(comment.get_absolute_url())
 
 def about_me(request):
     return render(
