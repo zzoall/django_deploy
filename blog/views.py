@@ -1,5 +1,5 @@
 from django.shortcuts import render  # Function Based View 를 사용했습니다
-from .models import Post, Category
+from .models import Post, Category, Tag
 from django.views.generic import ListView # 게시판형으로 데이터를 가지고 오는 클래스 
 from django.views.generic.detail import DetailView
 from django.views.generic import CreateView
@@ -85,6 +85,28 @@ def category_posts(request, slug):
             # no_category 글의 개수 세기기 count()
             # Post.objects.filter(category=None)를 호출하도록 urls도 변경해야 할겁니다
 
+        }
+
+    )
+
+
+def tag_posts(request, slug):
+    # 조건문을 완성해주세요 
+    if slug == "no_tag":
+        posts = Post.objects.filter(tag=None)
+    else:
+        tag = Tag.objects.get(slug=slug) # /hiphop
+        posts = Post.objects.filter(tag=tag)
+
+    # 카테고리가 없으면 None을 가지고 있는 값을 보냅니다.
+    return render(
+        request,
+        'blog/post_list.html',
+        {
+            'posts' : posts,
+            'tag' : tag,
+            'categories' : Category.objects.all(),
+            'no_category_post_count' : Post.objects.filter(category=None).count()
         }
 
     )

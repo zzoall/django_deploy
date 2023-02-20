@@ -1,12 +1,29 @@
-
-# tag를 클릭하면 post_list를 재활용한 각 태그별 글이 검색되도록(쿼리로 db에서 가져와서 화면에 렌더링되도록) 로직을 짜 주세요. 
-
-# blog/tag/ 여차저차 로 호출하게 합니다.
-# hiphop(3)
-
-# Comment 부분 model은 어떤 필드를 포함하고 있어야 할까요? 어떤 관계로 Post, User와 맺어져야 할까요 
+--- COMMENT에 대해 Template, View, Url을 완성해서 admin에서 입력한 댓글이 해당 글에 출력되도록 보완해보세요
+--- admin에서 COMMENT 확인해보시고 POST와 같이 관리되고 있는지 어떻게해야 관리될지 고민해보세요
 
 --- 월요일 오전
+v # tag를 클릭하면 post_list를 재활용한 각 태그별 글이 검색되도록
+    (쿼리로 db에서 가져와서 화면에 렌더링되도록) 로직을 짜 주세요. 
+v # blog/tag/ 여차저차 로 호출하게 합니다.
+v # hiphop(3)
+v # Comment 부분 model은 어떤 필드를 포함하고 있어야 할까요? 어떤 관계로 Post, User와 맺어져야 할까요 
+    # M - Comment 
+		field 
+		 	User(fk)
+		 	post(fk)
+		 	content
+		 	created_at
+		 	updated_at
+
+# T - post_detail.html 
+ 
+# V - C, R, U, D 
+
+# URL 
+http://localhost:8000/blog/9/create 
+
+
+
 
 # CreateView - 객체를 생성하는 역할과 Form 양식을 모두 전담
 

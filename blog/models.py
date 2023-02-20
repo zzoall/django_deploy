@@ -73,3 +73,20 @@ class Post(models.Model):
     def first_post_query(self):
         return Post.objects.all().last().title
 
+# M - Comment  
+class Comment(models.Model):
+    # 게시글에 필요한 필드: Primary Key, 제목, 내용, 작성일, 수정일, 작성자
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)  # 아예 값 자체가 지금 시간으로 입력되어 들어감(우리가 변경할 필요 없음)
+    updated_at = models.DateTimeField(auto_now=True)  # 값을 변경할 수 있음. default 값으로 현재시간이 찍혀있음 
+    # 글이 삭제되었을 때 댓글은 어떻게 남아있어야 할까 - CASCADE
+    # CASCADE : User를 삭제하면 관련있는 모든 현재 테이블의 데이터 삭제
+    author = models.ForeignKey(Post, on_delete=models.CASCADE)
+    # 사용자가 탈퇴했을 때 댓글은 어떻게 남아있어야 할 것이냐 - CASCADE
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+def __str__(self):
+    return f'[{self.author} / {self.content}]'
+
+def get_absolute_url(self):  # 댓글을 수정, 삭제할 때 이 함수를 호출할겁니다
+    return f'/blog/{self.pk}/'
