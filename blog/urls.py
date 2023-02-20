@@ -21,6 +21,6 @@ urlpatterns = [
     path('tag/<str:slug>/', views.tag_posts, name="tag"),
     # path('index2/', views.index2)  # 주소/blog/index2
     path('create_post/', views.PostCreate.as_view()),
-    path('<int:pk>/new_comment/', views.new_comment())
+    path('<int:pk>/new_comment/', views.new_comment)
 ]
 

@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect  # Function Based View 를 사용했습니다
+from django.shortcuts import render, redirect, get_object_or_404  # Function Based View 를 사용했습니다
 from .models import Post, Category, Tag
 from django.views.generic import ListView # 게시판형으로 데이터를 가지고 오는 클래스 
 from django.views.generic.detail import DetailView
 from django.views.generic import CreateView
 from .forms import CommentForm
+from django.core.exceptions import PermissionDenied # 인가 - 권한이 있는 경우가 아니면 발생시키는 예외처리
 
 class PostCreate(CreateView):
     model = Post
@@ -63,6 +64,7 @@ class PostDetail(DetailView):  # post_detail 라고 생긴 template과 model을 
         # print(context['object']) # 뭐가 들어있나 확인해보세요
         context['subject'] = context['object'].title 
         # 필요한 값들을 ORM으로 뽑아서 가져올 수 있습니다.
+        context['comment_form'] = CommentForm
         return context
 
 def category_posts(request, slug):
@@ -126,11 +128,29 @@ def tag_posts(request, slug):
 # 내가 단 댓글만 수정, 삭제를 할 수 있게 할 거에요 
 
 def new_comment(request, pk):
-    if request.method=='POST':
-        comment_form = CommentForm(request.POST)
-        comment = comment_form.save() # commit 
-        # blog/post_list.html, 글번호가 있는 자리 -> 이 자리를 어딘가에서 만들어주면 될 거 같아요
-        return redirect(comment.get_absolute_url())
+    # 일단 로그인상태인지 확인을 합니다
+    if request.user.is_authenticated:
+        # 없는 글을 호출한 경우 -> 404 에러를 내거나
+        post = get_object_or_404(Post, pk=pk)
+        # 있으면 post를 전달하되 글번호에 맞는 post를 전달합니다. 
+        # post = Post.objects.filter(pk=pk)
+    # 그리고 데이터가 잘 왔는지 확인합니다 
+        if request.method=='POST':
+            comment_form = CommentForm(request.POST)
+            # comment_form이 인가를 거친 폼이면(아무가 아니라 로그인하고 댓글 쓸 자격이 있는 사람의 코멘트이면)
+            if comment_form.is_valid():
+            # 그리고 데이터를 DB에 넣어줍니다
+                comment = comment_form.save(commit=False) # commit
+                comment.post = post
+                comment.author = request.user
+                comment.save()
+            # blog/post_list.html, 글번호가 있는 자리 -> 이 자리를 어딘가에서 만들어주면 될 거 같아요
+            # 새로 바뀐 DB(등록된 댓글)의 데이터를 가지고 화면으로 돌아갑니다 
+                return redirect(comment.get_absolute_url())
+            else:
+                return redirect(post.get_absolute_url())
+        else:
+            raise PermissionDenied
 
 def about_me(request):
     return render(

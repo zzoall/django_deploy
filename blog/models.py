@@ -85,8 +85,8 @@ class Comment(models.Model):
     # 사용자가 탈퇴했을 때 댓글은 어떻게 남아있어야 할 것이냐 - CASCADE
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
-def __str__(self):
-    return f'[{self.author} / {self.content}]'
+    def __str__(self):
+        return f'[{self.author} / {self.content}]'
 
-def get_absolute_url(self):  # 댓글을 수정, 삭제할 때 이 함수를 호출할겁니다
-    return f'/blog/{self.pk}/'
+    def get_absolute_url(self):
+        return f'{self.post.get_absolute_url()}#comment-{self.pk}' # #을 단 이유 : html에서 id를 의미하기 때문
