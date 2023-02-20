@@ -81,9 +81,9 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # 값을 변경할 수 있음. default 값으로 현재시간이 찍혀있음 
     # 글이 삭제되었을 때 댓글은 어떻게 남아있어야 할까 - CASCADE
     # CASCADE : User를 삭제하면 관련있는 모든 현재 테이블의 데이터 삭제
-    author = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     # 사용자가 탈퇴했을 때 댓글은 어떻게 남아있어야 할 것이냐 - CASCADE
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 def __str__(self):
     return f'[{self.author} / {self.content}]'
