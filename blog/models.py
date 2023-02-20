@@ -83,7 +83,7 @@ class Comment(models.Model):
     # CASCADE : User를 삭제하면 관련있는 모든 현재 테이블의 데이터 삭제
     author = models.ForeignKey(Post, on_delete=models.CASCADE)
     # 사용자가 탈퇴했을 때 댓글은 어떻게 남아있어야 할 것이냐 - CASCADE
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 def __str__(self):
     return f'[{self.author} / {self.content}]'
