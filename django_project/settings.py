@@ -162,5 +162,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '_media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-SITE_ID = 1
+# SITE_ID = 1 # 배포할 때 site 중 n번째 사이트와 연결하겠다는 의미
 
+# ACCOUNT_EMAIL_REQUIRED = True  # 어느 필드까지 우선으로 받을 것인지
+# ACCOUNT_EMAIL_VERIFICATION = 'none' # 메일 인증 필요한 경우 받을 수 있음
+LOGIN_REDIRECT_URL = "/blog/"  # 로그인 후 'blog'로 이동 
+# -> 이유 blog의 views.py에 login, logout, update 등의 기능 모두 구현해놓았기 때문 
