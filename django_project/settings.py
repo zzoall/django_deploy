@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-t2yib&rf5^v^jdnb=w65*qd0qx+p1j0ml-@m8jc99@i$fu(#+q"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False # 배포시에는 false로 변경해주어야 에러메시지가 남에게 노출되지 않음
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hansol.pythonanywhere.com', 'localhost', '127.0.0.1'] # 이 경로로 접속한 사람만 에러메시지를 볼 수 있다.
 
 
 # Application definition
